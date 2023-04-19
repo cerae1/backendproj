@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-lqb%_cm!1ey7pq(%qk30am_m%ipsvj$^501v3&6*saifc6n4k3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'rest_framework.authtoken',
-
+    'corsheaders',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'backendnato.urls'
@@ -136,9 +138,29 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
     'SEND_CONFIRMATION_EMAIL': True,
     'ACTIVATION_URL': 'activation/{uid}/{token}',
+    'SERIALIZERS': {
+        'user_create': 'accounts.serializers.CustomUserSerializer',
+    },
+
 }
 
-EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
-EMAIL_HOST_USER = 'fcbd1cb894af19'
-EMAIL_HOST_PASSWORD = '1745243f5f4ded'
-EMAIL_PORT = '2525'
+BASE_URL = 'http://localhost:3000/'
+
+# EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+# EMAIL_HOST_USER = 'a4d6101781f5c2'
+# EMAIL_HOST_PASSWORD = 'eaa4ec48db8e3d'
+# EMAIL_PORT = '2525'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'cherrymaebatiquin@gmail.com'
+EMAIL_HOST_PASSWORD = 'koztcntxtbidzvpf'
+
+AUTH_USER_MODEL = "accounts.User"
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_CREDENTIALS = True
